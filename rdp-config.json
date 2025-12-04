@@ -1,0 +1,19 @@
+{
+  "connections": {
+    "windows-bitlocker-test": {
+      "hostname": "193.93.250.143",
+      "bitwarden_item": "windows-bitlocker-test",
+      "description": "Windows Test Server for Freerdp and bitwarden script"
+    },
+    "cust-server02": {
+      "hostname": "192.168.1.11",
+      "bitwarden_item": "Server02 RDP",
+      "description": "Customer Server 02"
+    },
+    "prod-web01": {
+      "hostname": "10.0.0.50",
+      "bitwarden_item": "Production Web Server",
+      "description": "Production Web Server"
+    }
+  }
+}
