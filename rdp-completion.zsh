@@ -1,5 +1,11 @@
 #!/usr/bin/env zsh
 
+# Initialize completion system if not already loaded
+if ! type compdef &> /dev/null; then
+    autoload -Uz compinit
+    compinit -i
+fi
+
 : ${xrdp_config_file:="${0:A:h}/rdp-config.json"}
 
 _rdp_completion() {
@@ -13,12 +19,14 @@ _rdp_completion() {
         return
     fi
     
-    connections=($(cat "$XRDP_CONFIG_FILE" | jq -r '.connections | keys[]' | sed 's/^/rdp_/'))
+    connections=($(cat "$xrdp_config_file" | jq -r '.connections | keys[]' | sed 's/^/rdp_/'))
     
     _describe 'rdp connections' connections
 }
 
-compdef _rdp_completion 'rdp_*'
+if type compdef &> /dev/null; then
+    compdef _rdp_completion 'rdp_*'
+fi
 
 _rdp_pattern_completion() {
     local -a connections
@@ -50,4 +58,6 @@ _rdp_completion_with_descriptions() {
     _describe 'rdp connections' connections
 }
 
-compdef _rdp_completion_with_descriptions 'rdp_*'
+if type compdef &> /dev/null; then
+    compdef _rdp_completion_with_descriptions 'rdp_*'
+fi

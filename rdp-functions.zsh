@@ -81,20 +81,37 @@ _rdp_connect() {
         return 1
     fi
     
+    local domain=""
+    local user_only="$username"
+    if [[ "$username" == */* ]]; then
+        domain="${username%%/*}"
+        user_only="${username##*/}"
+    fi
+    
     echo "Username: $username"
+    if [[ -n "$domain" ]]; then
+        echo "Domain: $domain"
+    fi
     echo "Connecting..."
     
     local -a rdp_args
     rdp_args=(
         /v:${hostname}
-        /u:${username}
-        /p:${password}
         /cert:ignore
         +compression
         +auto-reconnect
         +clipboard
         +dynamic-resolution
     )
+    
+    if [[ -n "$domain" ]]; then
+        rdp_args+=(/d:${domain})
+        rdp_args+=(/u:${user_only})
+    else
+        rdp_args+=(/u:${username})
+    fi
+    
+    rdp_args+=(/p:${password})
     
     /opt/freerdp-nightly/bin/xfreerdp3 "${rdp_args[@]}"
 }
